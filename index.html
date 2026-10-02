@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+  <title>Regalo de Bodas | Gabri & Franssia — Trini y Miguel</title>
+  <meta name="description"
+    content="Regalo de bodas para Gabri y Franssia de parte de Trini y Miguel: experiencia gastronómica con Estrella Michelin en Restaurante Vandelvira (Baeza).">
+
+  <!-- Google Fonts: Cormorant Garamond (Editorial Serif) & Plus Jakarta Sans (Minimal Sans) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap"
+    rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <!-- Ambient background glow (minimal) -->
+  <div class="ambient-glow"></div>
+
+  <!-- Audio Toggle (Minimalist) -->
+  <button id="sound-toggle-btn" class="minimal-sound-btn" aria-label="Música ambiental" title="Sonido ambiente">
+    <span class="sound-bars">
+      <span></span><span></span><span></span>
+    </span>
+    <span class="sound-text">Música</span>
+  </button>
+
+  <!-- =======================================================================
+       COVER SCREEN: REALISTIC WEDDING ENVELOPE & ARTISAN WAX SEAL
+       ======================================================================= -->
+  <section id="envelope-screen" class="envelope-screen">
+    <div class="envelope-scene">
+
+      <!-- Realistic Wedding Envelope -->
+      <div class="wedding-envelope" id="wedding-envelope">
+
+        <!-- Inside Card peeking out -->
+        <div class="envelope-card-peek">
+          <span class="peek-tag">Enlace de Bodas</span>
+          <h2 class="peek-names">Gabri &amp; Franssia</h2>
+          <p class="peek-from">De Trini y Miguel</p>
+        </div>
+
+        <!-- Envelope Body Pocket Front -->
+        <div class="envelope-pocket-front"></div>
+
+        <!-- Envelope Triangular Flap -->
+        <div class="envelope-flap" id="envelope-flap"></div>
+
+        <!-- Realistic Handcrafted Sealing Wax Button -->
+        <button id="open-gift-btn" class="artisan-wax-seal" aria-label="Abrir sobre de boda con sello">
+          <svg class="wax-seal-svg" viewBox="0 0 160 160" width="110" height="110" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <!-- 3D Shadow filter for melted wax pool -->
+              <filter id="seal-shadow" x="-20%" y="-20%" width="150%" height="150%">
+                <feDropShadow dx="0" dy="8" stdDeviation="6" flood-color="#3d0a0e" flood-opacity="0.55" />
+                <feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#000000" flood-opacity="0.35" />
+              </filter>
+
+              <!-- Radial Gradient for Molten Wax Base -->
+              <radialGradient id="wax-pool-grad" cx="36%" cy="32%" r="65%">
+                <stop offset="0%" stop-color="#b8323a" />
+                <stop offset="25%" stop-color="#991f26" />
+                <stop offset="65%" stop-color="#731319" />
+                <stop offset="100%" stop-color="#4a080d" />
+              </radialGradient>
+
+              <!-- Inner Stamp Depression Gradient -->
+              <radialGradient id="stamp-inner-grad" cx="38%" cy="35%" r="60%">
+                <stop offset="0%" stop-color="#80181e" />
+                <stop offset="70%" stop-color="#611015" />
+                <stop offset="100%" stop-color="#3d070b" />
+              </radialGradient>
+
+              <!-- Wax Specular Gloss Highlight -->
+              <linearGradient id="wax-highlight" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#ffffff" stop-opacity="0.45" />
+                <stop offset="40%" stop-color="#ffffff" stop-opacity="0.0" />
+              </linearGradient>
+
+              <!-- Emboss effect for the Monogram -->
+              <filter id="deboss" x="-10%" y="-10%" width="120%" height="120%">
+                <feOffset dx="0" dy="1.5" in="SourceAlpha" result="offset1" />
+                <feFlood flood-color="#000000" flood-opacity="0.8" result="color1" />
+                <feComposite in="color1" in2="offset1" operator="in" result="shadow" />
+                <feOffset dx="0" dy="-1" in="SourceAlpha" result="offset2" />
+                <feFlood flood-color="#ffffff" flood-opacity="0.28" result="color2" />
+                <feComposite in="color2" in2="offset2" operator="in" result="highlight" />
+                <feMerge>
+                  <feMergeNode in="shadow" />
+                  <feMergeNode in="highlight" />
+                  <feMergeNode in="SourceGraphic" />
+                </feMerge>
+              </filter>
+            </defs>
+
+            <!-- Outer Melted Wax Pool (Organic Molten Droplet Geometry) -->
+            <path class="wax-pool-path" filter="url(#seal-shadow)" fill="url(#wax-pool-grad)" d="
+              M 80,10 
+              C 105,8 122,18 135,32 
+              C 148,46 156,65 153,85 
+              C 150,106 142,126 126,140 
+              C 110,154 88,156 68,153 
+              C 48,150 28,142 16,125 
+              C 4,108 5,86 10,66 
+              C 15,46 28,26 48,15 
+              C 62,7 72,11 80,10 Z
+            " />
+
+            <!-- Wax Top Specular Glaze Highlight -->
+            <path fill="url(#wax-highlight)" d="
+              M 48,18 
+              C 65,11 95,11 115,22 
+              C 125,28 133,38 136,48 
+              C 126,38 106,28 85,26 
+              C 64,24 45,30 35,42 
+              C 36,32 40,23 48,18 Z
+            " />
+
+            <!-- Circular Inner Stamp Impression -->
+            <circle cx="80" cy="82" r="50" fill="url(#stamp-inner-grad)" stroke="#4a080d" stroke-width="1.5" />
+
+            <!-- Raised Outer Brass Matrix Ring -->
+            <circle cx="80" cy="82" r="46" fill="none" stroke="#2a0407" stroke-width="1.8" stroke-dasharray="none" />
+            <circle cx="80" cy="82" r="44" fill="none" stroke="rgba(255, 255, 255, 0.22)" stroke-width="0.8" />
+
+            <!-- Delicate Inner Beaded/Dots Ring -->
+            <circle cx="80" cy="82" r="39" fill="none" stroke="rgba(255, 220, 220, 0.35)" stroke-width="1.2"
+              stroke-dasharray="2 3" />
+
+            <!-- Authentic Pressed Monogram "G & F" -->
+            <g filter="url(#deboss)" fill="#f6d3d4" text-anchor="middle">
+              <text x="80" y="87" font-family="'Cormorant Garamond', Georgia, serif" font-size="34" font-weight="600"
+                letter-spacing="1">G &amp; F</text>
+              <!-- Small Olive Sprig / Laurel Flourish (Tribute to Baeza) -->
+              <path d="M 64,103 C 72,100 88,100 96,103 C 88,106 72,106 64,103 Z" fill="rgba(255, 220, 220, 0.4)" />
+              <circle cx="80" cy="103" r="1.5" fill="rgba(255, 220, 220, 0.5)" />
+            </g>
+          </svg>
+
+          <!-- Subtle pulse ring around the seal -->
+          <div class="seal-glow-ring"></div>
+        </button>
+      </div>
+
+      <p class="envelope-instruction">Toca el sello para abrir la invitación</p>
+    </div>
+  </section>
+
+  <!-- =======================================================================
+       MAIN EXPERIENCE (MINIMALIST EDITORIAL)
+       ======================================================================= -->
+  <main id="main-content" class="main-content hidden">
+
+    <!-- Top minimal bar -->
+    <header class="minimal-header">
+      <span class="brand-monogram">G &amp; F</span>
+      <span class="header-divider">/</span>
+      <span class="brand-sub">Trini y Miguel</span>
+    </header>
+
+    <!-- Hero Title -->
+    <section class="hero-section">
+      <span class="hero-badge">Estrella Michelin • Baeza</span>
+      <h1 class="hero-title">Gabri &amp; Franssia</h1>
+      <p class="hero-lead">
+        Para celebrar vuestro matrimonio, os regalamos una velada gastronómica en el
+        <strong>Restaurante Vandelvira</strong>. Tenéis <strong>un año completo</strong> para
+        disfrutarlo cuando mejor os venga.
+      </p>
+    </section>
+
+    <!-- =====================================================================
+         THE TICKET (MINIMALIST LUXURY DESIGN)
+         ===================================================================== -->
+    <section class="ticket-section" id="ticket-section">
+      <div class="minimal-ticket" id="minimal-ticket">
+
+        <div class="ticket-top">
+          <div class="ticket-pill">Bono Regalo Gastronómico</div>
+          <span class="ticket-validity">Validez: 1 Año</span>
+        </div>
+
+        <div class="ticket-header-block">
+          <span class="ticket-meta-label">Para</span>
+          <h2 class="ticket-guest-name">Gabri &amp; Franssia</h2>
+          <span class="ticket-from-tag">Con todo el cariño de <strong>Trini y Miguel</strong></span>
+        </div>
+
+        <div class="ticket-divider"></div>
+
+        <div class="ticket-body-block">
+          <span class="ticket-meta-label">Experiencia</span>
+          <h3 class="ticket-exp-title">Menú Degustación</h3>
+
+          <div class="restaurant-info">
+            <h4 class="restaurant-name">Restaurante Vandelvira</h4>
+            <div class="distinctions-line">
+              <span>★ 1 Estrella Michelin</span>
+              <span class="dot">•</span>
+              <span>☀️ 2 Soles Repsol</span>
+            </div>
+            <p class="restaurant-place">Claustro de San Francisco (S. XVI), Baeza, Jaén</p>
+          </div>
+
+          <div class="ticket-specs-grid">
+            <div class="spec-col">
+              <span class="spec-label">Comensales</span>
+              <span class="spec-val">2 Personas</span>
+            </div>
+            <div class="spec-col">
+              <span class="spec-label">Periodo</span>
+              <span class="spec-val">12 Meses (Cualquier fecha)</span>
+            </div>
+            <div class="spec-col">
+              <span class="spec-label">Reserva</span>
+              <span class="spec-val">Directa con restaurante</span>
+            </div>
+            <div class="spec-col">
+              <span class="spec-label">Estado</span>
+              <span class="spec-val highlight">100% Cubierto</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="ticket-divider"></div>
+
+        <!-- Validity Countdown Widget (1 Año desde hoy) -->
+        <div class="ticket-countdown-container">
+          <div class="countdown-header">
+            <span class="countdown-badge">Validez del Regalo</span>
+            <span class="countdown-title">Tiempo restante para disfrutarlo</span>
+          </div>
+          <div class="countdown-display" id="validity-countdown">
+            <div class="cd-box">
+              <span class="cd-number" id="cd-days">365</span>
+              <span class="cd-text">Días</span>
+            </div>
+            <span class="cd-dots">:</span>
+            <div class="cd-box">
+              <span class="cd-number" id="cd-hours">00</span>
+              <span class="cd-text">Horas</span>
+            </div>
+            <span class="cd-dots">:</span>
+            <div class="cd-box">
+              <span class="cd-number" id="cd-mins">00</span>
+              <span class="cd-text">Min</span>
+            </div>
+            <span class="cd-dots">:</span>
+            <div class="cd-box">
+              <span class="cd-number" id="cd-secs">00</span>
+              <span class="cd-text">Seg</span>
+            </div>
+          </div>
+          <p class="countdown-expiry">Válido durante 1 año completo (hasta el <strong>2 de octubre de 2027</strong>)</p>
+        </div>
+
+        <div class="ticket-divider"></div>
+
+        <!-- Ticket Action: Manual File Download & Route Button -->
+        <div class="ticket-actions-area">
+          <button type="button" class="btn-primary-action" id="download-voucher-btn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="7 10 12 15 17 10"></polyline>
+              <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            <span>Descargar Bono Regalo (PDF)</span>
+          </button>
+          <a href="https://www.google.com/maps/dir/?api=1&destination=Restaurante+Vandelvira,+Plaza+de+San+Francisco,+23440+Baeza,+Ja%C3%A9n"
+            target="_blank" rel="noopener noreferrer" class="btn-secondary-action" id="ticket-route-btn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polygon points="3 11 22 2 13 21 11 13 3 11"></polygon>
+            </svg>
+            <span>Ver ruta para llegar al restaurante</span>
+          </a>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Visual Storytelling: Atmosphere (Real Establishment Photos) -->
+    <section class="gallery-section">
+      <div class="gallery-card">
+        <div class="img-wrapper">
+          <img src="./assets/claustro-real.jpg"
+            alt="Claustro renacentista del Convento de San Francisco (S. XVI), sede de Vandelvira" loading="lazy">
+        </div>
+        <div class="card-caption">
+          <span class="caption-num">01</span>
+          <div>
+            <h4>El Claustro del Siglo XVI</h4>
+            <p>Convento renacentista concebido por Andrés de Vandelvira en Baeza. Un entorno monumental donde comienza
+              la velada.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="gallery-card">
+        <div class="img-wrapper">
+          <img src="./assets/comedor-real.jpg" alt="Comedor y mesas del Restaurante Vandelvira" loading="lazy">
+        </div>
+        <div class="card-caption">
+          <span class="caption-num">02</span>
+          <div>
+            <h4>La Sala y la Atmósfera</h4>
+            <p>Intimidad, sosiego y luz tenue entre bóvedas de piedra histórica para saborear con calma cada momento.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="gallery-card">
+        <div class="img-wrapper">
+          <img src="./assets/plato-real.jpg" alt="Alta gastronomía en Vandelvira, Estrella Michelin" loading="lazy">
+        </div>
+        <div class="card-caption">
+          <span class="caption-num">03</span>
+          <div>
+            <h4>Cocina de Autor · Estrella Michelin</h4>
+            <p>Propuesta de Juan Carlos García: homenaje al virgen extra y las raíces jiennenses con precisión de
+              vanguardia.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         MENU DEGUSTACION (EDITORIAL MICHELIN PRESENTATION)
+         ===================================================================== -->
+    <section class="menu-section" id="menu-section">
+      <div class="menu-card">
+        <div class="menu-header">
+          <div class="menu-header-badge">★ 1 Estrella Michelin · 2 Soles Repsol</div>
+          <span class="menu-kicker">Propuesta Gastronómica</span>
+          <h3 class="menu-title">Menú Degustación</h3>
+          <p class="menu-subtitle">El menú que degustaréis en Restaurante Vandelvira</p>
+          <div class="menu-gold-divider">
+            <span></span>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+            </svg>
+            <span></span>
+          </div>
+        </div>
+
+        <div class="menu-dishes-grid">
+          <!-- Bloque 1: Apertura & Bocados -->
+          <div class="menu-course-block">
+            <span class="course-group-title">Apertura &amp; Bocado</span>
+            <ul class="dish-list">
+              <li class="dish-item">Camembert, nueces y PX</li>
+              <li class="dish-item">Pistacho y cornezuelo</li>
+              <li class="dish-item">Pañuelo de calamar y jamón</li>
+              <li class="dish-item">Calamar y dashi de jamón</li>
+            </ul>
+          </div>
+
+          <!-- Bloque 2: Huerta, Olivar & Mar -->
+          <div class="menu-course-block">
+            <span class="course-group-title">Huerta, Olivar &amp; Mar</span>
+            <ul class="dish-list">
+              <li class="dish-item">Gamba y regaliz</li>
+              <li class="dish-item">Pimiento, caviar y regaliz</li>
+              <li class="dish-item">Pimiento y codium</li>
+              <li class="dish-item">Merluza en blanco</li>
+              <li class="dish-item">Espárrago blanco, piparra y vainilla</li>
+              <li class="dish-item">Almendras y mojama</li>
+              <li class="dish-item">Boquerón y anchoa</li>
+              <li class="dish-item">Pipirrana</li>
+              <li class="dish-item">Sardina</li>
+            </ul>
+          </div>
+
+          <!-- Bloque 3: Tierra & Tradición -->
+          <div class="menu-course-block">
+            <span class="course-group-title">Tierra, Brasa &amp; Fondo</span>
+            <ul class="dish-list">
+              <li class="dish-item">Aliño de matanza</li>
+              <li class="dish-item">Cordero</li>
+              <li class="dish-item">Mole negro y morcilla</li>
+              <li class="dish-item">Nabo y toffee de jamón</li>
+            </ul>
+          </div>
+
+          <!-- Bloque 4: Sobremesa Dulce -->
+          <div class="menu-course-block">
+            <span class="course-group-title">Final Dulce &amp; Sobremesa</span>
+            <ul class="dish-list">
+              <li class="dish-item">Maritozzo</li>
+              <li class="dish-item">Tocinillo y pimientos</li>
+              <li class="dish-item">Piquillo, pimienta y chocolate</li>
+              <li class="dish-item">Canelé, chocolate y jengibre</li>
+              <li class="dish-item">Chocolate</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="menu-footer-note">
+          <p>*Puede haber pequeñas variaciones de producto o elaboración, dependiendo de la disponibilidad de mercado.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Dedication Letter (Minimalist Paper, Permanent Text) -->
+    <section class="letter-section">
+      <div class="minimal-letter">
+        <h3 class="letter-heading">Queridos Gabri &amp; Franssia</h3>
+
+        <div class="letter-text-content">
+          <p>
+            Qué alegría tan inmensa veros dar este paso. Para nosotros es muy emocionante ver el amor y la complicidad
+            que compartís.
+          </p>
+          <p>
+            Queríamos regalaros un momento especial para vosotros dos: una velada en Vandelvira, en la tranquilidad de
+            Baeza, para saborear con calma y brindar por este nuevo camino que empieza.
+          </p>
+          <p>
+            Tenéis todo un año por delante para elegir la fecha que más os apetezca.
+          </p>
+          <p class="letter-salutation">
+            ¡Os deseamos toda la felicidad del mundo!
+          </p>
+          <p class="letter-signature-text">
+            Con todo nuestro amor, <strong>Trini y Miguel</strong> ❤️
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Minimalist Footer -->
+    <footer class="minimal-footer">
+      <p class="footer-copy">Gabri &amp; Franssia • Restaurante Vandelvira</p>
+      <p class="footer-names">De Trini y Miguel con cariño</p>
+    </footer>
+
+  </main>
+
+  <!-- =======================================================================
+       PIN PROTECTION MODAL (EDITORIAL LUXURY)
+       ======================================================================= -->
+  <div id="pin-modal" class="pin-modal-backdrop" aria-hidden="true">
+    <div class="pin-modal-card" role="dialog" aria-modal="true" aria-labelledby="pin-modal-title">
+      <button id="pin-modal-close" class="pin-modal-close-btn" type="button" aria-label="Cerrar ventana">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+
+      <div class="pin-modal-icon-badge">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+          <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+        </svg>
+      </div>
+
+      <span class="pin-modal-kicker">Acceso Seguro</span>
+      <h3 id="pin-modal-title" class="pin-modal-title">Código de acceso</h3>
+      <p class="pin-modal-desc">Introduce la clave de 6 dígitos para desbloquear y descargar vuestro bono regalo.</p>
+
+      <form id="pin-form" class="pin-form" onsubmit="return false;">
+        <div class="pin-input-wrap">
+          <input type="password" id="pin-input" class="pin-input-field" inputmode="numeric" pattern="[0-9]*"
+            maxlength="6" placeholder="••••••" autocomplete="off">
+        </div>
+
+        <div class="pin-attempts-info" id="pin-attempts-info">
+          <span>Intentos disponibles: <strong id="attempts-count">3</strong> / 3</span>
+        </div>
+
+        <p id="pin-error-msg" class="pin-feedback-msg" aria-live="polite"></p>
+
+        <button type="submit" id="pin-submit-btn" class="btn-pin-submit">
+          <span>Desbloquear y Descargar</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </button>
+      </form>
+
+      <p class="pin-modal-hint">Pista: Dos notas máximas y el doble de trece.</p>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+
+</html>

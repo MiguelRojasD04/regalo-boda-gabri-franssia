@@ -1,0 +1,1272 @@
+/* ==========================================================================
+   REGALO DE BODAS GABRI & FRANSSIA
+   De Trini y Miguel
+   Estilo: Minimalismo Editorial de Lujo & Sello de Lacre Realista
+   ========================================================================== */
+
+:root {
+  /* Minimal Warm Palette */
+  --bg-main: #faf9f6;
+  --bg-card: #ffffff;
+  --bg-subtle: #f4f2ee;
+  --border-fine: #e8e4dc;
+  --border-dark: #1a1a1a;
+
+  /* Envelope & Wax Colors */
+  --env-paper: #f7f5ed;
+  --env-paper-front: #eee9dc;
+  --env-shadow: rgba(40, 30, 20, 0.09);
+  --color-seal: #841d24;
+
+  /* Typography Colors */
+  --color-heading: #141414;
+  --color-body: #4a4742;
+  --color-muted: #827e77;
+  --color-accent: #9e7a36;
+
+  /* Fonts */
+  --font-serif: 'Cormorant Garamond', Georgia, serif;
+  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+
+  /* Border radius */
+  --radius-card: 16px;
+  --radius-btn: 8px;
+  --radius-pill: 30px;
+
+  --transition-smooth: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Reset & Basics */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--bg-main);
+  color: var(--color-body);
+  line-height: 1.6;
+  min-height: 100dvh;
+  position: relative;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Subtle Ambient Glow */
+.ambient-glow {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90vw;
+  max-width: 600px;
+  height: 350px;
+  background: radial-gradient(ellipse at center, rgba(235, 225, 210, 0.6) 0%, rgba(250, 249, 246, 0) 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Minimal Audio Toggle */
+.minimal-sound-btn {
+  position: fixed;
+  top: 18px;
+  right: 18px;
+  z-index: 120;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 14px;
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid var(--border-fine);
+  border-radius: var(--radius-pill);
+  color: var(--color-heading);
+  font-family: var(--font-sans);
+  font-size: 0.76rem;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  transition: var(--transition-smooth);
+}
+
+.minimal-sound-btn:active {
+  transform: scale(0.96);
+}
+
+.sound-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 11px;
+}
+
+.sound-bars span {
+  width: 2px;
+  height: 4px;
+  background: var(--color-heading);
+  border-radius: 1px;
+}
+
+.minimal-sound-btn.playing .sound-bars span:nth-child(1) { animation: soundBar 1s infinite ease-in-out; }
+.minimal-sound-btn.playing .sound-bars span:nth-child(2) { animation: soundBar 1s infinite ease-in-out 0.2s; }
+.minimal-sound-btn.playing .sound-bars span:nth-child(3) { animation: soundBar 1s infinite ease-in-out 0.4s; }
+
+@keyframes soundBar {
+  0%, 100% { height: 3px; }
+  50% { height: 11px; }
+}
+
+/* ==========================================================================
+   COVER SCREEN: WEDDING ENVELOPE & REALISTIC ARTISAN WAX SEAL
+   ========================================================================== */
+.envelope-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: radial-gradient(circle at center, #fbfaf7 0%, #ebe5d8 100%);
+  transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1), transform 0.75s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.75s;
+}
+
+.envelope-screen.opened {
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(1.05);
+  pointer-events: none;
+}
+
+.envelope-scene {
+  width: 100%;
+  max-width: 390px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Physical Envelope Structure */
+.wedding-envelope {
+  position: relative;
+  width: 100%;
+  height: 250px;
+  background-color: var(--env-paper);
+  border-radius: 14px;
+  box-shadow: 
+    0 22px 50px var(--env-shadow),
+    0 4px 14px rgba(0, 0, 0, 0.04),
+    inset 0 0 0 1px rgba(0, 0, 0, 0.05);
+  perspective: 1000px;
+  overflow: visible;
+}
+
+/* Inside Card peeking out */
+.envelope-card-peek {
+  position: absolute;
+  top: 14px;
+  left: 16px;
+  right: 16px;
+  height: 195px;
+  background: #ffffff;
+  border-radius: 10px;
+  border: 1px solid #e3dec3;
+  padding: 24px 16px;
+  text-align: center;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03);
+  z-index: 1;
+}
+
+.peek-tag {
+  font-size: 0.68rem;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  font-weight: 600;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.peek-names {
+  font-family: var(--font-serif);
+  font-size: 1.95rem;
+  font-weight: 500;
+  color: var(--color-heading);
+  letter-spacing: 0.5px;
+  line-height: 1.15;
+  margin-bottom: 4px;
+}
+
+.peek-from {
+  font-size: 0.82rem;
+  color: var(--color-muted);
+}
+
+/* Lower pocket triangle of envelope */
+.envelope-pocket-front {
+  position: absolute;
+  inset: 0;
+  border-radius: 14px;
+  background: linear-gradient(180deg, rgba(238, 233, 222, 0.25) 0%, var(--env-paper-front) 70%);
+  clip-path: polygon(0 42%, 50% 88%, 100% 42%, 100% 100%, 0 100%);
+  z-index: 2;
+  pointer-events: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+/* Top Triangular Flap */
+.envelope-flap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 142px;
+  background: linear-gradient(180deg, #eae3d5 0%, #ded6c5 100%);
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  border-radius: 14px 14px 0 0;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.09));
+  z-index: 3;
+  transform-origin: top;
+  transition: transform 0.65s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+}
+
+.wedding-envelope.opening .envelope-flap {
+  transform: rotateX(165deg);
+}
+
+/* ==========================================================================
+   ARTISAN VECTOR WAX SEAL (AUTHENTIC MELTED WAX STAMP)
+   ========================================================================== */
+.artisan-wax-seal {
+  position: absolute;
+  top: 90px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  outline: none;
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.artisan-wax-seal:hover {
+  transform: translateX(-50%) scale(1.06);
+}
+
+.artisan-wax-seal:active {
+  transform: translateX(-50%) scale(0.95);
+}
+
+.wax-seal-svg {
+  width: 106px;
+  height: 106px;
+  display: block;
+  overflow: visible;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.15));
+}
+
+.seal-glow-ring {
+  position: absolute;
+  inset: 6px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(184, 144, 60, 0.35);
+  pointer-events: none;
+  animation: pulseGlow 2.8s infinite ease-in-out;
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    transform: scale(0.96);
+    opacity: 0.3;
+  }
+  50% {
+    transform: scale(1.08);
+    opacity: 0.8;
+    border-color: rgba(212, 175, 55, 0.6);
+  }
+}
+
+.envelope-instruction {
+  margin-top: 36px;
+  font-size: 0.85rem;
+  color: var(--color-muted);
+  font-style: italic;
+  letter-spacing: 0.3px;
+}
+
+/* ==========================================================================
+   MAIN EXPERIENCE CONTAINER (MINIMAL EDITORIAL)
+   ========================================================================== */
+.main-content {
+  position: relative;
+  z-index: 10;
+  max-width: 580px;
+  margin: 0 auto;
+  padding: 0 20px 80px;
+  opacity: 1;
+  transition: opacity 0.5s ease;
+}
+
+.main-content.hidden {
+  display: none;
+  opacity: 0;
+}
+
+/* Top minimal bar */
+.minimal-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 22px 0;
+  border-bottom: 1px solid var(--border-fine);
+  margin-bottom: 34px;
+}
+
+.brand-monogram {
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: var(--color-heading);
+  letter-spacing: 1px;
+}
+
+.header-divider {
+  color: var(--border-fine);
+  font-size: 0.9rem;
+}
+
+.brand-sub {
+  font-size: 0.78rem;
+  color: var(--color-muted);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+/* Hero Section */
+.hero-section {
+  text-align: center;
+  padding: 10px 0 34px;
+}
+
+.hero-badge {
+  display: inline-block;
+  font-size: 0.72rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  font-weight: 600;
+  margin-bottom: 14px;
+}
+
+.hero-title {
+  font-family: var(--font-serif);
+  font-size: clamp(2.5rem, 9vw, 3.4rem);
+  font-weight: 400;
+  color: var(--color-heading);
+  line-height: 1.1;
+  letter-spacing: 0.5px;
+  margin-bottom: 16px;
+}
+
+.hero-lead {
+  font-size: 0.96rem;
+  color: var(--color-body);
+  line-height: 1.7;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.hero-lead strong {
+  color: var(--color-heading);
+  font-weight: 600;
+}
+
+/* ==========================================================================
+   THE TICKET (MINIMALIST LUXURY DESIGN)
+   ========================================================================== */
+.ticket-section {
+  margin-bottom: 48px;
+}
+
+.minimal-ticket {
+  background: var(--bg-card);
+  border: 1px solid var(--border-fine);
+  border-radius: var(--radius-card);
+  padding: 30px 24px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+  position: relative;
+}
+
+.ticket-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 22px;
+}
+
+.ticket-pill {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--color-heading);
+  background: var(--bg-subtle);
+  padding: 4px 10px;
+  border-radius: 4px;
+}
+
+.ticket-validity {
+  font-size: 0.75rem;
+  color: var(--color-accent);
+  font-weight: 600;
+}
+
+.ticket-header-block {
+  margin-bottom: 20px;
+}
+
+.ticket-meta-label {
+  display: block;
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--color-muted);
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.ticket-guest-name {
+  font-family: var(--font-serif);
+  font-size: 2.2rem;
+  font-weight: 400;
+  color: var(--color-heading);
+  line-height: 1.15;
+  margin-bottom: 4px;
+}
+
+.ticket-from-tag {
+  font-size: 0.84rem;
+  color: var(--color-muted);
+}
+
+.ticket-from-tag strong {
+  color: var(--color-heading);
+  font-weight: 500;
+}
+
+.ticket-divider {
+  height: 1px;
+  background: var(--border-fine);
+  margin: 20px 0;
+}
+
+.ticket-body-block {
+  margin-bottom: 10px;
+}
+
+.ticket-exp-title {
+  font-family: var(--font-serif);
+  font-size: 1.55rem;
+  font-weight: 500;
+  color: var(--color-heading);
+  margin-bottom: 8px;
+}
+
+.restaurant-info {
+  background: var(--bg-subtle);
+  border-radius: 8px;
+  padding: 14px 16px;
+  margin-bottom: 18px;
+}
+
+.restaurant-name {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--color-heading);
+  margin-bottom: 4px;
+}
+
+.distinctions-line {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--color-accent);
+  margin-bottom: 4px;
+}
+
+.distinctions-line .dot {
+  color: var(--color-muted);
+}
+
+.restaurant-place {
+  font-size: 0.8rem;
+  color: var(--color-muted);
+}
+
+/* Specs Grid */
+.ticket-specs-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.spec-col {
+  display: flex;
+  flex-direction: column;
+  padding: 10px 12px;
+  border-left: 2px solid var(--border-fine);
+}
+
+.spec-label {
+  font-size: 0.7rem;
+  color: var(--color-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 2px;
+}
+
+.spec-val {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-heading);
+}
+
+.spec-val.highlight {
+  color: var(--color-accent);
+}
+
+/* Ticket Validity Countdown Widget */
+.ticket-countdown-container {
+  background: var(--bg-subtle);
+  border: 1px solid var(--border-fine);
+  border-radius: 12px;
+  padding: 16px 14px;
+  text-align: center;
+}
+
+.countdown-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 12px;
+}
+
+.countdown-badge {
+  display: inline-block;
+  font-size: 0.68rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--color-accent);
+  background: #ffffff;
+  border: 1px solid rgba(158, 122, 54, 0.25);
+  padding: 3px 10px;
+  border-radius: var(--radius-pill);
+}
+
+.countdown-title {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-heading);
+}
+
+.countdown-display {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.cd-box {
+  background: #ffffff;
+  border: 1px solid var(--border-fine);
+  border-radius: 8px;
+  min-width: 58px;
+  padding: 8px 4px 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+}
+
+.cd-number {
+  font-family: var(--font-serif);
+  font-size: 1.55rem;
+  font-weight: 600;
+  line-height: 1;
+  color: var(--color-heading);
+  font-variant-numeric: tabular-nums;
+}
+
+.cd-text {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--color-muted);
+  margin-top: 3px;
+  font-weight: 500;
+}
+
+.cd-dots {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--color-muted);
+  margin-bottom: 10px;
+}
+
+.countdown-expiry {
+  font-size: 0.78rem;
+  color: var(--color-muted);
+}
+
+.countdown-expiry strong {
+  color: var(--color-heading);
+}
+
+/* Ticket Action (Manual File Download & Route Button) */
+.ticket-actions-area {
+  padding-top: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.btn-primary-action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 50px;
+  padding: 12px 18px;
+  background: var(--color-heading);
+  color: #ffffff;
+  border: none;
+  border-radius: var(--radius-btn);
+  font-family: var(--font-sans);
+  font-size: 0.92rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+  transition: var(--transition-smooth);
+}
+
+.btn-primary-action:hover {
+  background: #2b2b2b;
+  transform: translateY(-1px);
+}
+
+.btn-primary-action:active {
+  transform: scale(0.98);
+}
+
+.btn-secondary-action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 48px;
+  padding: 11px 18px;
+  background: var(--bg-subtle);
+  color: var(--color-heading);
+  border: 1px solid var(--border-fine);
+  border-radius: var(--radius-btn);
+  font-family: var(--font-sans);
+  font-size: 0.88rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.btn-secondary-action:hover {
+  background: #eae6dd;
+  border-color: #d6d0c4;
+  transform: translateY(-1px);
+}
+
+.btn-secondary-action:active {
+  transform: scale(0.98);
+}
+
+/* ==========================================================================
+   MINIMALIST GALLERY / STORIES
+   ========================================================================== */
+.gallery-section {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  margin-bottom: 52px;
+}
+
+.gallery-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-fine);
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  transition: var(--transition-smooth);
+}
+
+.gallery-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.05);
+}
+
+.img-wrapper {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: #eceae5;
+}
+
+.img-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.gallery-card:hover .img-wrapper img {
+  transform: scale(1.03);
+}
+
+.card-caption {
+  display: flex;
+  gap: 16px;
+  padding: 18px 20px;
+}
+
+.caption-num {
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
+  color: var(--color-muted);
+  font-weight: 400;
+}
+
+.card-caption h4 {
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: var(--color-heading);
+  margin-bottom: 4px;
+}
+
+.card-caption p {
+  font-size: 0.86rem;
+  color: var(--color-muted);
+  line-height: 1.5;
+}
+
+/* ==========================================================================
+   MENU DEGUSTACION (EDITORIAL MICHELIN PRESENTATION)
+   ========================================================================== */
+.menu-section {
+  margin-bottom: 52px;
+}
+
+.menu-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-fine);
+  border-radius: var(--radius-card);
+  padding: 38px 28px 32px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+  position: relative;
+  overflow: hidden;
+}
+
+.menu-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.menu-header-badge {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  color: var(--color-accent);
+  background: #fbf7ee;
+  border: 1px solid #ebd9b5;
+  padding: 4px 14px;
+  border-radius: var(--radius-pill);
+  margin-bottom: 12px;
+}
+
+.menu-kicker {
+  font-size: 0.74rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  font-weight: 600;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.menu-title {
+  font-family: var(--font-serif);
+  font-size: 2.2rem;
+  font-weight: 400;
+  color: var(--color-heading);
+  margin-bottom: 6px;
+  line-height: 1.15;
+}
+
+.menu-subtitle {
+  font-size: 0.88rem;
+  color: var(--color-muted);
+  font-style: italic;
+  margin-bottom: 16px;
+}
+
+.menu-gold-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  max-width: 240px;
+  margin: 0 auto;
+  color: var(--color-accent);
+}
+
+.menu-gold-divider span {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(158, 122, 54, 0.4), transparent);
+}
+
+.menu-dishes-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+  margin-bottom: 28px;
+}
+
+@media (min-width: 600px) {
+  .menu-dishes-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 28px 22px;
+  }
+}
+
+.menu-course-block {
+  background: #fcfbf8;
+  border: 1px solid rgba(232, 228, 220, 0.7);
+  border-radius: 12px;
+  padding: 20px 18px 16px;
+  transition: var(--transition-smooth);
+}
+
+.menu-course-block:hover {
+  background: #faf8f3;
+  border-color: #ded8cb;
+  transform: translateY(-1px);
+}
+
+.course-group-title {
+  display: block;
+  font-family: var(--font-serif);
+  font-size: 1.12rem;
+  font-weight: 500;
+  color: var(--color-heading);
+  padding-bottom: 8px;
+  margin-bottom: 12px;
+  border-bottom: 1px solid var(--border-fine);
+  letter-spacing: 0.5px;
+}
+
+.dish-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.dish-item {
+  font-size: 0.88rem;
+  color: #3b3935;
+  line-height: 1.45;
+  position: relative;
+  padding-left: 14px;
+}
+
+.dish-item::before {
+  content: '•';
+  position: absolute;
+  left: 0;
+  color: var(--color-accent);
+  font-size: 1.1rem;
+  line-height: 1;
+  top: 1px;
+}
+
+.menu-footer-note {
+  text-align: center;
+  padding-top: 18px;
+  border-top: 1px solid var(--border-fine);
+}
+
+.menu-footer-note p {
+  font-size: 0.78rem;
+  color: var(--color-muted);
+  font-style: italic;
+  line-height: 1.5;
+}
+
+/* ==========================================================================
+   DEDICATION LETTER (CLEAN STATIC CARD)
+   ========================================================================== */
+.letter-section {
+  margin-bottom: 52px;
+}
+
+.minimal-letter {
+  background: var(--bg-card);
+  border: 1px solid var(--border-fine);
+  border-radius: var(--radius-card);
+  padding: 34px 24px 30px;
+  position: relative;
+}
+
+.letter-heading {
+  font-family: var(--font-serif);
+  font-size: 1.7rem;
+  font-weight: 400;
+  color: var(--color-heading);
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.letter-text-content {
+  font-family: var(--font-serif);
+  font-size: 1.18rem;
+  line-height: 1.75;
+  color: #3b3935;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.letter-salutation {
+  font-weight: 600;
+  color: var(--color-heading);
+}
+
+.letter-signature-text {
+  font-size: 1.15rem;
+  color: var(--color-seal);
+  margin-top: 4px;
+}
+
+.letter-signature-text strong {
+  color: var(--color-seal);
+}
+
+/* ==========================================================================
+   MINIMAL FOOTER
+   ========================================================================== */
+.minimal-footer {
+  text-align: center;
+  padding: 24px 0 10px;
+  border-top: 1px solid var(--border-fine);
+  font-size: 0.8rem;
+  color: var(--color-muted);
+}
+
+.footer-copy {
+  color: var(--color-heading);
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+/* ==========================================================================
+   PIN PROTECTION MODAL (EDITORIAL LUXURY)
+   ========================================================================== */
+.pin-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  background: rgba(20, 16, 12, 0.65);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.3s;
+}
+
+.pin-modal-backdrop.active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.pin-modal-card {
+  position: relative;
+  width: 100%;
+  max-width: 380px;
+  background: #ffffff;
+  border: 1px solid var(--border-fine);
+  border-radius: 20px;
+  padding: 36px 28px 30px;
+  box-shadow: 0 24px 50px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  transform: scale(0.94) translateY(12px);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.pin-modal-backdrop.active .pin-modal-card {
+  transform: scale(1) translateY(0);
+}
+
+.pin-modal-card.shake {
+  animation: pinShake 0.45s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+@keyframes pinShake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-8px); }
+  40%, 80% { transform: translateX(8px); }
+}
+
+.pin-modal-close-btn {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: none;
+  background: var(--bg-subtle);
+  color: var(--color-muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition-smooth);
+}
+
+.pin-modal-close-btn:hover {
+  background: #eae5d8;
+  color: var(--color-heading);
+}
+
+.pin-modal-icon-badge {
+  width: 50px;
+  height: 50px;
+  margin: 0 auto 16px;
+  border-radius: 50%;
+  background: #fbf7ee;
+  border: 1px solid #ebd9b5;
+  color: var(--color-accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pin-modal-kicker {
+  font-size: 0.7rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  font-weight: 600;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.pin-modal-title {
+  font-family: var(--font-serif);
+  font-size: 1.75rem;
+  font-weight: 500;
+  color: var(--color-heading);
+  margin-bottom: 6px;
+}
+
+.pin-modal-desc {
+  font-size: 0.85rem;
+  color: var(--color-muted);
+  line-height: 1.5;
+  margin-bottom: 20px;
+}
+
+.pin-input-wrap {
+  margin-bottom: 10px;
+}
+
+.pin-input-field {
+  width: 100%;
+  height: 54px;
+  border-radius: 12px;
+  border: 1.5px solid var(--border-fine);
+  background: var(--bg-subtle);
+  font-family: var(--font-sans);
+  font-size: 1.8rem;
+  font-weight: 700;
+  text-align: center;
+  letter-spacing: 12px;
+  color: var(--color-heading);
+  transition: var(--transition-smooth);
+  outline: none;
+}
+
+.pin-input-field:focus {
+  border-color: var(--color-accent);
+  background: #ffffff;
+  box-shadow: 0 0 0 4px rgba(158, 122, 54, 0.12);
+}
+
+.pin-input-field.error {
+  border-color: #d32f2f;
+  background: #fff8f8;
+  color: #d32f2f;
+}
+
+.pin-input-field.success {
+  border-color: #2e7d32;
+  background: #f4fbf4;
+  color: #2e7d32;
+}
+
+.pin-input-field:disabled {
+  opacity: 0.65;
+  background: #ece7dc;
+  border-color: #d1cbbd;
+  cursor: not-allowed;
+}
+
+.pin-attempts-info {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 0.76rem;
+  color: var(--color-muted);
+  margin-top: 6px;
+  margin-bottom: 8px;
+  transition: var(--transition-smooth);
+}
+
+.pin-attempts-info strong {
+  color: var(--color-accent);
+  font-weight: 700;
+}
+
+.pin-attempts-info.warning strong {
+  color: #d32f2f;
+}
+
+.pin-feedback-msg {
+  min-height: 20px;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: #d32f2f;
+  margin-bottom: 14px;
+  transition: var(--transition-smooth);
+}
+
+.pin-feedback-msg.success {
+  color: #2e7d32;
+}
+
+.btn-pin-submit {
+  width: 100%;
+  min-height: 48px;
+  border-radius: var(--radius-btn);
+  border: none;
+  background: var(--color-heading);
+  color: #ffffff;
+  font-family: var(--font-sans);
+  font-size: 0.92rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+  transition: var(--transition-smooth);
+}
+
+.btn-pin-submit:hover {
+  background: #2b2b2b;
+  transform: translateY(-1px);
+}
+
+.btn-pin-submit:active {
+  transform: scale(0.98);
+}
+
+.btn-pin-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.pin-modal-hint {
+  font-size: 0.78rem;
+  color: var(--color-muted);
+  margin-top: 18px;
+  line-height: 1.4;
+}
+
+/* ==========================================================================
+   PRINT STYLES (@media print)
+   ========================================================================== */
+@media print {
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+  }
+
+  .minimal-sound-btn,
+  .minimal-header,
+  .hero-section,
+  .gallery-section,
+  .instructions-section,
+  .ticket-actions-area,
+  .minimal-footer,
+  .envelope-screen,
+  .ambient-glow {
+    display: none !important;
+  }
+
+  .main-content {
+    max-width: 100% !important;
+    padding: 0 !important;
+  }
+
+  .minimal-ticket {
+    border: 1px solid #111 !important;
+    box-shadow: none !important;
+    page-break-inside: avoid;
+  }
+
+  .minimal-letter {
+    border: 1px solid #ccc !important;
+    box-shadow: none !important;
+    page-break-inside: avoid;
+  }
+}
