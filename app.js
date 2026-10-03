@@ -24,13 +24,46 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ==========================================================================
-  // WEB AUDIO API - MINIMALIST AMBIENT CHORDS (PROCEDURAL)
+  // WEB AUDIO API - MINIMALIST AMBIENT CHORDS (PROCEDURAL MULTIMEDIA)
   // ==========================================================================
   let audioCtx = null;
   let isSoundPlaying = false;
   let ambientInterval = null;
+  let silentAudioElement = null;
+
+  /**
+   * Fuerza el enrutamiento de audio a categoría MULTIMEDIA (playback) en iOS / iPhone
+   * para que suene incluso con la palanca o botón de modo silencio activado.
+   */
+  function enableIOSMultimediaAudio() {
+    // 1. API nativa oficial de WebKit / iOS 17+
+    if ('audioSession' in navigator) {
+      try {
+        navigator.audioSession.type = 'playback';
+      } catch (e) {
+        // Ignorado en navegadores sin soporte
+      }
+    }
+
+    // 2. Compatibilidad con versiones anteriores de iOS mediante audio multimedia
+    try {
+      if (!silentAudioElement) {
+        silentAudioElement = document.createElement('audio');
+        silentAudioElement.setAttribute('playsinline', '');
+        silentAudioElement.setAttribute('webkit-playsinline', '');
+        silentAudioElement.src = 'data:audio/wav;base64,UklGRigAAABXQVZFZm10IBIAAAABAAEARKwAAIhYAQACABAAAABkYXRhAgAAAAEA';
+        silentAudioElement.loop = true;
+        silentAudioElement.volume = 0.01;
+      }
+      silentAudioElement.play().catch(() => {});
+    } catch (e) {
+      // Ignorado
+    }
+  }
 
   function initAudio() {
+    enableIOSMultimediaAudio();
+
     if (!audioCtx) {
       const AudioCtxClass = window.AudioContext || window.webkitAudioContext;
       if (AudioCtxClass) {
@@ -95,6 +128,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function startMusic() {
     initAudio();
+    if (silentAudioElement) {
+      silentAudioElement.play().catch(() => {});
+    }
     isSoundPlaying = true;
     soundToggleBtn.classList.add('playing');
     playNextChord();
@@ -106,6 +142,9 @@ document.addEventListener('DOMContentLoaded', () => {
     isSoundPlaying = false;
     soundToggleBtn.classList.remove('playing');
     if (ambientInterval) clearInterval(ambientInterval);
+    if (silentAudioElement) {
+      silentAudioElement.pause();
+    }
   }
 
   soundToggleBtn.addEventListener('click', () => {
@@ -121,6 +160,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // UNBOXING / SEAL TAP & ENVELOPE OPENING ANIMATION
   // ==========================================================================
   openGiftBtn.addEventListener('click', () => {
+    enableIOSMultimediaAudio();
     triggerHaptic([40, 50]);
     playSubtleChime();
 
