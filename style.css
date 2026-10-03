@@ -1233,6 +1233,91 @@ body {
 }
 
 /* ==========================================================================
+   SUCCESS VIEW (OPCIÓN 1: BOTÓN DIRECTO NATIVO PARA IPHONE / SAFARI)
+   ========================================================================== */
+.pin-view-success.hidden,
+#pin-view-input.hidden {
+  display: none !important;
+}
+
+.pin-modal-icon-badge.success-badge {
+  background: #f0fdf4;
+  border-color: #86efac;
+  color: #16a34a;
+}
+
+.pin-modal-kicker.success-kicker {
+  color: #16a34a;
+}
+
+.unlocked-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.btn-open-voucher {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 52px;
+  padding: 14px 18px;
+  background: var(--color-heading);
+  color: #ffffff;
+  border-radius: var(--radius-btn);
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-decoration: none;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  transition: var(--transition-smooth);
+}
+
+.btn-open-voucher:hover {
+  background: #2b2b2b;
+  transform: translateY(-1px);
+}
+
+.btn-open-voucher:active {
+  transform: scale(0.98);
+}
+
+.btn-direct-download-link {
+  font-size: 0.8rem;
+  color: var(--color-muted);
+  text-decoration: underline;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  padding: 4px;
+}
+
+.btn-direct-download-link:hover {
+  color: var(--color-heading);
+}
+
+.success-mobile-hint {
+  font-size: 0.78rem;
+  color: var(--color-muted);
+  margin-top: 16px;
+  line-height: 1.4;
+}
+
+.btn-primary-action.unlocked {
+  background: #1e3a24;
+  border: 1px solid #2e7d32;
+  color: #ffffff;
+}
+
+.btn-primary-action.unlocked:hover {
+  background: #172e1c;
+}
+
+/* ==========================================================================
    PRINT STYLES (@media print)
    ========================================================================== */
 @media print {

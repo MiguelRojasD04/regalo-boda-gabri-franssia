@@ -455,38 +455,75 @@
         </svg>
       </button>
 
-      <div class="pin-modal-icon-badge">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-          <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-        </svg>
+      <!-- VISTA 1: INTRODUCIR CÓDIGO PIN -->
+      <div id="pin-view-input">
+        <div class="pin-modal-icon-badge">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+          </svg>
+        </div>
+
+        <span class="pin-modal-kicker">Acceso Seguro</span>
+        <h3 id="pin-modal-title" class="pin-modal-title">Código de acceso</h3>
+        <p class="pin-modal-desc">Introduce la clave de 6 dígitos para desbloquear y descargar vuestro bono regalo.</p>
+
+        <form id="pin-form" class="pin-form" onsubmit="return false;">
+          <div class="pin-input-wrap">
+            <input type="password" id="pin-input" class="pin-input-field" inputmode="numeric" pattern="[0-9]*"
+              maxlength="6" placeholder="••••••" autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false">
+          </div>
+
+          <div class="pin-attempts-info" id="pin-attempts-info">
+            <span>Intentos disponibles: <strong id="attempts-count">3</strong> / 3</span>
+          </div>
+
+          <p id="pin-error-msg" class="pin-feedback-msg" aria-live="polite"></p>
+
+          <button type="submit" id="pin-submit-btn" class="btn-pin-submit">
+            <span>Desbloquear y Descargar</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+          </button>
+        </form>
+
+        <p class="pin-modal-hint">Pista: Dos notas máximas y el doble de trece.</p>
       </div>
 
-      <span class="pin-modal-kicker">Acceso Seguro</span>
-      <h3 id="pin-modal-title" class="pin-modal-title">Código de acceso</h3>
-      <p class="pin-modal-desc">Introduce la clave de 6 dígitos para desbloquear y descargar vuestro bono regalo.</p>
-
-      <form id="pin-form" class="pin-form" onsubmit="return false;">
-        <div class="pin-input-wrap">
-          <input type="password" id="pin-input" class="pin-input-field" inputmode="numeric" pattern="[0-9]*"
-            maxlength="6" placeholder="••••••" autocomplete="off">
-        </div>
-
-        <div class="pin-attempts-info" id="pin-attempts-info">
-          <span>Intentos disponibles: <strong id="attempts-count">3</strong> / 3</span>
-        </div>
-
-        <p id="pin-error-msg" class="pin-feedback-msg" aria-live="polite"></p>
-
-        <button type="submit" id="pin-submit-btn" class="btn-pin-submit">
-          <span>Desbloquear y Descargar</span>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <polyline points="9 18 15 12 9 6"></polyline>
+      <!-- VISTA 2: CÓDIGO CORRECTO - BOTÓN DIRECTO (COMPATIBLE CON IPHONE / SAFARI) -->
+      <div id="pin-view-success" class="pin-view-success hidden">
+        <div class="pin-modal-icon-badge success-badge">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <polyline points="20 6 9 17 4 12"></polyline>
           </svg>
-        </button>
-      </form>
+        </div>
 
-      <p class="pin-modal-hint">Pista: Dos notas máximas y el doble de trece.</p>
+        <span class="pin-modal-kicker success-kicker">¡Código Correcto!</span>
+        <h3 class="pin-modal-title">Bono Desbloqueado</h3>
+        <p class="pin-modal-desc">
+          Vuestro bono regalo en <strong>Restaurante Vandelvira</strong> ya está disponible.
+        </p>
+
+        <div class="unlocked-actions">
+          <a id="btn-open-voucher" href="#" target="_blank" rel="noopener noreferrer" class="btn-open-voucher">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+              <polyline points="15 3 21 3 21 9"></polyline>
+              <line x1="10" y1="14" x2="21" y2="3"></line>
+            </svg>
+            <span>Abrir Bono Regalo (PDF)</span>
+          </a>
+
+          <a id="btn-direct-download" href="#" target="_blank" rel="noopener noreferrer" class="btn-direct-download-link">
+            Descargar archivo directamente
+          </a>
+        </div>
+
+        <p class="success-mobile-hint">
+          Se abrirá el PDF para que podáis verlo y guardarlo en vuestro iPhone o imprimirlo.
+        </p>
+      </div>
     </div>
   </div>
 

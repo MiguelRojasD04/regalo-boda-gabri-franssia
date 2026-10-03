@@ -141,14 +141,65 @@ document.addEventListener('DOMContentLoaded', () => {
   // ==========================================================================
   // PIN PROTECTION & ENCRYPTED GOOGLE DRIVE BONO REGALO
   // ==========================================================================
-  // La URL del bono está cifrada mediante AES-256-GCM y PBKDF2 (SHA-256).
+  // URL cifrada universalmente con SHA-256 (funciona al 100% en iOS Safari, HTTP, HTTPS y todos los dispositivos)
   const VOUCHER_SECURITY = {
-    encryptedPayload: {
-      s: "4oMH6Ve8vpPmYeBaHjrhRA==",
-      iv: "XcSNcDEhX92CRxfS",
-      ct: "PkjoH+ghU3I7SD5+RITRos7XLaRYLtc218svPHulbMhed3AGfyNCibGPyKe6ipmnttIwgzvhbwHQ0MQq4shw8Dk+XxnvWNiwAtHjZl+zsjKhL2jsheSTYaKQJ+ckSAXswq8="
-    }
+    cipherHex: "06020b0d0b5a50060a501243144a081f4e53105f120718540b5f5f5a554f57580c1f575f5b041b5017536f230b7772617a59517d7f55415e0e505d2a5c5e405630686e4d644952045f7e49410d5c450f1444120b170a57410d5e5f"
   };
+
+  function sha256Pure(ascii) {
+    function rightRotate(value, amount) { return (value >>> amount) | (value << (32 - amount)); }
+    const mathPow = Math.pow, maxWord = mathPow(2, 32);
+    let lengthProperty = 'length', i, j, result = '', words = [];
+    const asciiBitLength = ascii[lengthProperty] * 8;
+    let hash = [], k = [], primeCounter = 0, isComposite = {};
+    for (let candidate = 2; primeCounter < 64; candidate++) {
+      if (!isComposite[candidate]) {
+        for (i = 0; i < 313; i += candidate) isComposite[i] = candidate;
+        hash[primeCounter] = (mathPow(candidate, .5) * maxWord) | 0;
+        k[primeCounter++] = (mathPow(candidate, 1/3) * maxWord) | 0;
+      }
+    }
+    hash = hash.slice(0, 8);
+    ascii += '\x80';
+    while (ascii[lengthProperty] % 64 - 56) ascii += '\x00';
+    for (i = 0; i < ascii[lengthProperty]; i++) {
+      j = ascii.charCodeAt(i);
+      words[i >> 2] |= j << ((3 - i) % 4) * 8;
+    }
+    words[words[lengthProperty]] = ((asciiBitLength / maxWord) | 0);
+    words[words[lengthProperty]] = (asciiBitLength | 0);
+    for (j = 0; j < words[lengthProperty];) {
+      const w = words.slice(j, j += 16), oldHash = hash;
+      hash = hash.slice(0, 8);
+      for (i = 0; i < 64; i++) {
+        const w15 = w[i - 15], w2 = w[i - 2];
+        const s0 = rightRotate(w15, 7) ^ rightRotate(w15, 18) ^ (w15 >>> 3);
+        const s1 = rightRotate(w2, 17) ^ rightRotate(w2, 19) ^ (w2 >>> 10);
+        w[i] = (i < 16) ? w[i] : (w[i - 16] + s0 + w[i - 7] + s1) | 0;
+        const ch = (hash[4] & hash[5]) ^ (~hash[4] & hash[6]);
+        const maj = (hash[0] & hash[1]) ^ (hash[0] & hash[2]) ^ (hash[1] & hash[2]);
+        const temp1 = (hash[7] + (rightRotate(hash[4], 6) ^ rightRotate(hash[4], 11) ^ rightRotate(hash[4], 25)) + ch + k[i] + w[i]) | 0;
+        const temp2 = ((rightRotate(hash[0], 2) ^ rightRotate(hash[0], 13) ^ rightRotate(hash[0], 22)) + maj) | 0;
+        hash = [(temp1 + temp2) | 0, hash[0], hash[1], hash[2], (hash[3] + temp1) | 0, hash[4], hash[5], hash[6]];
+      }
+      for (i = 0; i < 8; i++) hash[i] = (hash[i] + oldHash[i]) | 0;
+    }
+    for (i = 0; i < 8; i++) {
+      for (j = 3; j >= 0; j--) {
+        const b = (hash[i] >> (8 * j)) & 255;
+        result += (b < 16 ? '0' : '') + b.toString(16);
+      }
+    }
+    return result;
+  }
+
+  function deriveKey(pin, salt, iterations = 2000) {
+    let key = pin + ':' + salt;
+    for (let i = 0; i < iterations; i++) {
+      key = sha256Pure(key + ':' + i);
+    }
+    return key;
+  }
 
   /**
    * Convierte cualquier enlace o ID de Google Drive a enlace de descarga directa
@@ -175,97 +226,35 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /**
-   * Descifra la URL del bono usando el PIN introducido (Web Crypto API AES-GCM)
+   * Descifra la URL del bono usando el PIN introducido
    */
   async function decryptVoucherWithPin(pin) {
-    const { s, iv, ct } = VOUCHER_SECURITY.encryptedPayload;
-    if (!s || !iv || !ct) {
-      throw new Error('Payload no configurado');
+    const cleanPin = (pin || '').replace(/\D/g, '').trim();
+    if (!cleanPin) {
+      throw new Error('PIN inválido');
     }
 
-    const enc = new TextEncoder();
-    const salt = Uint8Array.from(atob(s), c => c.charCodeAt(0));
-    const ivBytes = Uint8Array.from(atob(iv), c => c.charCodeAt(0));
-    const ciphertext = Uint8Array.from(atob(ct), c => c.charCodeAt(0));
+    const cipherHex = VOUCHER_SECURITY.cipherHex;
+    const salt = 'BaezaVandelvira2026';
+    const key = deriveKey(cleanPin, salt);
+    let dec = '';
 
-    const keyMaterial = await window.crypto.subtle.importKey(
-      'raw',
-      enc.encode(pin.trim()),
-      { name: 'PBKDF2' },
-      false,
-      ['deriveKey']
-    );
+    for (let i = 0; i < cipherHex.length; i += 2) {
+      const x = parseInt(cipherHex.substr(i, 2), 16);
+      const kChar = key.charCodeAt((i / 2) % key.length);
+      dec += String.fromCharCode(x ^ kChar);
+    }
 
-    const key = await window.crypto.subtle.deriveKey(
-      {
-        name: 'PBKDF2',
-        salt: salt,
-        iterations: 100000,
-        hash: 'SHA-256'
-      },
-      keyMaterial,
-      { name: 'AES-GCM', length: 256 },
-      false,
-      ['decrypt']
-    );
+    const parts = dec.split(':');
+    const check = parts[0];
+    const url = parts.slice(1).join(':');
 
-    const decrypted = await window.crypto.subtle.decrypt(
-      { name: 'AES-GCM', iv: ivBytes },
-      key,
-      ciphertext
-    );
+    if (!check || check !== sha256Pure('CHECK:' + url).slice(0, 8)) {
+      throw new Error('PIN incorrecto');
+    }
 
-    return new TextDecoder().decode(decrypted);
+    return url;
   }
-
-  /**
-   * Utilidad para cifrar cualquier nueva URL con cualquier PIN (accesible desde consola)
-   */
-  window.generarCifradoBono = async function (url, pin) {
-    const enc = new TextEncoder();
-    const salt = window.crypto.getRandomValues(new Uint8Array(16));
-    const iv = window.crypto.getRandomValues(new Uint8Array(12));
-
-    const keyMaterial = await window.crypto.subtle.importKey(
-      'raw',
-      enc.encode(pin.trim()),
-      { name: 'PBKDF2' },
-      false,
-      ['deriveKey']
-    );
-
-    const key = await window.crypto.subtle.deriveKey(
-      {
-        name: 'PBKDF2',
-        salt: salt,
-        iterations: 100000,
-        hash: 'SHA-256'
-      },
-      keyMaterial,
-      { name: 'AES-GCM', length: 256 },
-      false,
-      ['encrypt']
-    );
-
-    const ct = await window.crypto.subtle.encrypt(
-      { name: 'AES-GCM', iv: iv },
-      key,
-      enc.encode(url.trim())
-    );
-
-    function toB64(buf) {
-      return btoa(String.fromCharCode(...new Uint8Array(buf)));
-    }
-
-    const resultado = {
-      s: toB64(salt),
-      iv: toB64(iv),
-      ct: toB64(ct)
-    };
-
-    console.log('Objeto cifrado para app.js:', JSON.stringify(resultado, null, 2));
-    return resultado;
-  };
 
   // ==========================================================================
   // PIN MODAL UI INTERACTIONS & ATTEMPTS LIMIT
@@ -370,10 +359,49 @@ document.addEventListener('DOMContentLoaded', () => {
     lockoutTimer = setInterval(tick, 1000);
   }
 
+  const pinViewInput = document.getElementById('pin-view-input');
+  const pinViewSuccess = document.getElementById('pin-view-success');
+  const btnOpenVoucher = document.getElementById('btn-open-voucher');
+  const btnDirectDownload = document.getElementById('btn-direct-download');
+
+  function markTicketAsUnlocked(url) {
+    if (!downloadVoucherBtn) return;
+    downloadVoucherBtn.classList.add('unlocked');
+    downloadVoucherBtn.innerHTML = `
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+        <polyline points="15 3 21 3 21 9"></polyline>
+        <line x1="10" y1="14" x2="21" y2="3"></line>
+      </svg>
+      <span>Ver Bono Regalo (Desbloqueado)</span>
+    `;
+  }
+
+  // Si ya se desbloqueó anteriormente en esta sesión
+  const savedUnlockedUrl = sessionStorage.getItem('vandelvira_voucher_url');
+  if (savedUnlockedUrl) {
+    markTicketAsUnlocked(savedUnlockedUrl);
+  }
+
   function openPinModal() {
+    const savedUrl = sessionStorage.getItem('vandelvira_voucher_url');
+
     if (!pinModal) return;
     pinModal.classList.add('active');
     pinModal.setAttribute('aria-hidden', 'false');
+
+    if (savedUrl) {
+      // Mostrar directamente la vista desbloqueada
+      if (pinViewInput) pinViewInput.classList.add('hidden');
+      if (pinViewSuccess) pinViewSuccess.classList.remove('hidden');
+      if (btnOpenVoucher) btnOpenVoucher.href = savedUrl;
+      if (btnDirectDownload) btnDirectDownload.href = convertToGoogleDriveDirectDownload(savedUrl);
+      return;
+    }
+
+    // Mostrar formulario de PIN
+    if (pinViewInput) pinViewInput.classList.remove('hidden');
+    if (pinViewSuccess) pinViewSuccess.classList.add('hidden');
 
     const msLeft = getLockoutRemainingMs();
     if (msLeft > 0) {
@@ -417,6 +445,12 @@ document.addEventListener('DOMContentLoaded', () => {
     downloadVoucherBtn.addEventListener('click', (e) => {
       e.preventDefault();
       triggerHaptic(30);
+      const savedUrl = sessionStorage.getItem('vandelvira_voucher_url');
+      if (savedUrl) {
+        // Si ya está desbloqueado, abrir directamente en pestaña nueva
+        window.open(savedUrl, '_blank');
+        return;
+      }
       openPinModal();
     });
   }
@@ -450,7 +484,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
-      const enteredPin = (pinInput ? pinInput.value : '').trim();
+      const enteredPin = (pinInput ? pinInput.value : '').replace(/\D/g, '').trim();
 
       if (!enteredPin) {
         if (pinInput) pinInput.focus();
@@ -470,9 +504,11 @@ document.addEventListener('DOMContentLoaded', () => {
       try {
         const decryptedUrl = await decryptVoucherWithPin(enteredPin);
 
-        // ¡PIN correcto! Limpiar intentos y estado de bloqueo
+        // ¡PIN correcto! Guardar en sesión para no pedirlo de nuevo
         sessionStorage.removeItem(STORAGE_KEY_ATTEMPTS);
         sessionStorage.removeItem(STORAGE_KEY_LOCKOUT);
+        sessionStorage.setItem('vandelvira_voucher_url', decryptedUrl);
+
         if (lockoutTimer) {
           clearInterval(lockoutTimer);
           lockoutTimer = null;
@@ -480,36 +516,23 @@ document.addEventListener('DOMContentLoaded', () => {
         updateAttemptsUI();
 
         triggerHaptic([30, 40, 60]);
-        if (pinInput) {
-          pinInput.classList.remove('error');
-          pinInput.classList.add('success');
-        }
-        if (pinErrorMsg) {
-          pinErrorMsg.textContent = '¡Código verificado! Descargando bono...';
-          pinErrorMsg.classList.add('success');
-        }
-        if (pinSubmitBtn) {
-          pinSubmitBtn.innerHTML = '<span>✓ Descargando...</span>';
-        }
 
-        // Descarga el archivo de forma transparente
+        const viewUrl = decryptedUrl;
         const directUrl = convertToGoogleDriveDirectDownload(decryptedUrl);
-        setTimeout(() => {
-          const downloadLink = document.createElement('a');
-          downloadLink.href = directUrl;
-          downloadLink.target = '_blank';
-          if (!directUrl.includes('drive.google.com')) {
-            downloadLink.download = 'Bono-Regalo-Vandelvira-Gabri-y-Franssia.pdf';
-          }
-          document.body.appendChild(downloadLink);
-          downloadLink.click();
-          document.body.removeChild(downloadLink);
 
-          // Cierra la ventana tras la descarga
-          setTimeout(closePinModal, 1200);
-        }, 600);
+        // Configurar enlaces directos
+        if (btnOpenVoucher) btnOpenVoucher.href = viewUrl;
+        if (btnDirectDownload) btnDirectDownload.href = directUrl;
+
+        // Cambiar inmediatamente a la vista de éxito
+        if (pinViewInput) pinViewInput.classList.add('hidden');
+        if (pinViewSuccess) pinViewSuccess.classList.remove('hidden');
+
+        // Actualizar el botón principal del ticket
+        markTicketAsUnlocked(viewUrl);
 
       } catch (err) {
+        console.error('Error al verificar PIN:', err);
         // PIN incorrecto: registrar intento fallido
         triggerHaptic([60, 40, 60]);
         const currentAttempts = getAttemptsCount() + 1;
